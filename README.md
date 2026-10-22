@@ -1,5 +1,7 @@
 # CS2 Configuration Snapshot Engine
 
+[![tests](https://github.com/JHONMARTINEZJD/cs2-cfg-snapshot/actions/workflows/tests.yml/badge.svg)](https://github.com/JHONMARTINEZJD/cs2-cfg-snapshot/actions/workflows/tests.yml)
+
 Motor profesional en **PowerShell** para descubrir, parsear, clasificar, validar y exportar la configuración **viva** de Counter-Strike 2 (CS2 / appid 730). Diseñado con una arquitectura modular orientada a objetos, tolerante a fallos y **determinista**: la misma instalación produce siempre el mismo snapshot.
 
 > Filosofía central: **la configuración viva del juego SIEMPRE manda**. Los valores por defecto (fallbacks) solo rellenan variables ausentes y **nunca** sobrescriben lo que el jugador ya tiene. Ningún comando se descarta jamás: lo desconocido se conserva y se etiqueta.
