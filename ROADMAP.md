@@ -77,35 +77,35 @@ Supuestos de producto tomados en A3 (opcion conservadora, revisables por el duen
 
 - [x] **Arranque del launcher.** `run.ps1` invocaba `Ensure-Dependencies -AllowInstall $true`;
       un `[switch]` no acepta el valor separado, el enlace de parametros fallaba con
-      error terminante y tumbaba `run.bat`, `run.cmd`, `run.ps1` y `launch.ps1`. (`6e4a93b`)
+      error terminante y tumbaba `run.bat`, `run.cmd`, `run.ps1` y `launch.ps1`. (`36528ae`)
 - [x] **Descubrimiento fuera de Windows.** `$env:SystemDrive` nulo hacia reventar
-      `Join-Path` en lugar de lanzar el error controlado que pide `-SteamPath`. (`6e4a93b`)
+      `Join-Path` en lugar de lanzar el error controlado que pide `-SteamPath`. (`36528ae`)
 - [x] **Categorias perdidas del autoexec.** El exportador recorria una lista literal
       de 45 nombres; el catalogo tiene 50. Bob, Spectator, Demo, GOTV y Practice
       desaparecian del archivo generado. Ahora los bloques se derivan de
       `CategoryMap::Blocks` y `AssertComplete()` falla si una categoria queda
-      huerfana. (`d1b59f3`)
-- [x] **Encabezados de bloque duplicados.** Se imprimian una vez por categoria. (`d1b59f3`)
+      huerfana. (`e1353ee`)
+- [x] **Encabezados de bloque duplicados.** Se imprimian una vez por categoria. (`e1353ee`)
 - [x] **Autoexec ejecutable.** Obsoletas, duplicados, invalidas y claves no
       reconocidas se emiten comentadas con su motivo en lugar de crudas. P49 sigue
-      activo: tiene forma de convar valida y comentarlo romperia config real. (`d1b59f3`)
+      activo: tiene forma de convar valida y comentarlo romperia config real. (`e1353ee`)
 - [x] **Catch-all de clasificacion.** La regla `(cl_|sv_|developer|hud_)` de P44
       absorbia toda convar `cl_`/`sv_` sin clasificar y dejaba P48/P49 inalcanzables.
-      Patrones acotados con `(?:^|[\s;])` y P44 con convars de desarrollo reales. (`d1b59f3`)
+      Patrones acotados con `(?:^|[\s;])` y P44 con convars de desarrollo reales. (`e1353ee`)
 - [x] **Basura con mayusculas.** `Classifier` usaba `-match`, insensible a caso, asi
-      que claves como `JugadorNombre` pasaban por convar valida. Ahora `-cmatch`. (`d1b59f3`)
+      que claves como `JugadorNombre` pasaban por convar valida. Ahora `-cmatch`. (`e1353ee`)
 - [x] **Alias circulares.** DFS con pila de recursion; antes un grafo en diamante sin
-      ciclos se reportaba como error. El mensaje incluye el ciclo concreto. (`d1b59f3`)
+      ciclos se reportaba como error. El mensaje incluye el ciclo concreto. (`e1353ee`)
 - [x] **Tipos de fallback.** Respetan el campo `type` del catalogo en lugar de entrar
-      siempre como `Unknown`, que falseaba los conteos del snapshot. (`d1b59f3`)
+      siempre como `Unknown`, que falseaba los conteos del snapshot. (`e1353ee`)
 - [x] **Higiene.** Codigo muerto de `CfgParser` reconectado, `ConfigModule` eliminado,
       `run.ps1` migrado a la API de Pester 5, `.gitignore`, CI en `windows-latest`,
-      fuera `tmp_debug.ps1` y `output/pester-results.xml`. (`d1b59f3`)
+      fuera `tmp_debug.ps1` y `output/pester-results.xml`. (`e1353ee`)
 - [x] **Prerrequisito de A2 — `Setting::FromHashtable()`.** Inverso completo de
       `ToHashtable()` (valor, tipo, prioridad, estado, categoria, `Extra` y metadatos),
       con la misma tolerancia que tenia la rehidratacion parcial del diff. `ConfigDiffEngine`
       la consume y su `ParseType` local desaparece; ahora los dos origenes posibles de una
-      fila del indice (config viva e inventario) pasan por `EntryFromSetting`. (`179b2b3`)
+      fila del indice (config viva e inventario) pasan por `EntryFromSetting`. (`0cc26e1`)
 - [x] **A2 — `Restore` / `Apply` con rollback.** Clase nueva `RestoreEngine`
       (`src/Backup/RestoreEngine.ps1`, cargada despues de `Reporting/ConfigDiff.ps1`
       porque sus firmas referencian `[ConfigDiffEngine]`). Modo por defecto solo-mostrar;
@@ -114,14 +114,14 @@ Supuestos de producto tomados en A3 (opcion conservadora, revisables por el duen
       en `<salida>/restore/<id>/backup-<ts>/` y rollback atomico en tres fases. El preview
       es el diff de A1 al reves via `ConfigDiffEngine::CompareConfigs`, filtrado a los
       cambios de `value` en la presentacion. Superficie del CLI: `-Restore <id|latest>`,
-      `-Apply`, `-RestoreTarget`, `-AllowLiveFileWrites`. (`179b2b3`)
+      `-Apply`, `-RestoreTarget`, `-AllowLiveFileWrites`. (`0cc26e1`)
 - [x] **A1 — Diff semantico entre snapshots.** `ConfigDiff.json` ya reporta altas, bajas
       y cambios **por ajuste** con valor antes y despues, identificados por
       `Setting::Key()` (`bind::<tecla>`, `alias::<nombre>`, nombre de convar) y
       agrupados por categoria, mas un resumen legible con tabla de cambiadas en
       `BackupReport.md`. Clase nueva `ConfigDiffEngine` en `src/Reporting/ConfigDiff.ps1`;
       la base de comparacion es el `Inventory.json` del snapshot anterior, cuya ruta
-      resuelve `SnapshotManager::GetInventoryPath`. (`18059fa`)
+      resuelve `SnapshotManager::GetInventoryPath`. (`b7ce661`)
 
 - [x] **A3 (mitad construible) — Importador de volcados de `cvarlist` y catalogo
       generado.** Clases nuevas en `src/Catalog/`: `CvarListParser` (parser tolerante
@@ -136,7 +136,7 @@ Supuestos de producto tomados en A3 (opcion conservadora, revisables por el duen
       `CfgParser` y `VcfgParser` pasa a `Setting::InferTypeFromValue()` y la usan los
       dos parsers y el catalogo, para que el mismo valor no se tipe distinto segun
       quien lo lea. 53 pruebas nuevas con fixtures sinteticos; las 98 anteriores
-      siguen pasando. (`021adbe`)
+      siguen pasando. (`c5a7d1a`)
 
 ### Siguiente
 
@@ -220,7 +220,7 @@ PowerShell; no hace falta cambiar de lenguaje.
 - [ ] El motor es Windows-only en la practica (rutas con `\` literal), no solo
       "Windows recomendado" como dice el README.
 - [x] ~~`Setting` no tiene inverso de `ToHashtable()`.~~ Resuelto con
-      `Setting::FromHashtable()` como prerrequisito de A2 (`179b2b3`).
+      `Setting::FromHashtable()` como prerrequisito de A2 (`0cc26e1`).
 - [x] **Un metodo de clase declarado `[string]` no puede devolver `$null`.**
       PowerShell CONVIERTE lo devuelto al tipo declarado, asi que `return $null` en un
       metodo `[string]` sale como cadena VACIA. El troceador de `cvarlist` usaba
@@ -283,7 +283,7 @@ PowerShell; no hace falta cambiar de lenguaje.
       de archivos en `ConfigFileDiscovery` (decide que duplicado gana la deduplicacion),
       la rotacion en `SnapshotManager` (decide que snapshots se borran) y el orden de
       hallazgos del `Validator`. Verificado: el autoexec sale identico byte a byte en
-      en-US, da-DK, tr-TR y sv-SE. (`adcaeed`)
+      en-US, da-DK, tr-TR y sv-SE. (`f99a272`)
 
       Aprendido por el camino: las claves compuestas que
       devuelve `Join-OrdinalKey` **solo** pueden compararse de forma ordinal. Los
